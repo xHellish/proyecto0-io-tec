@@ -5,8 +5,8 @@ CFLAGS = -Wall -g
 
 all: main
 
-main: main.c
-	$(CC) $(CFLAGS) main.c -o main
+main: *.c
+	$(CC) $(CFLAGS) *.c -o main
 
 pdf: 
 	flatpak-spawn --host pdflatex salida.tex

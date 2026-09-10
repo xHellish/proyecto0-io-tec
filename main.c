@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "aux.h"
+
 int main() {
+    pedir_datos();
 
     // --------------------------------- //
     // Crear el archivo de .tex
