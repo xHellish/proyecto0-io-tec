@@ -1,32 +1,17 @@
 #ifndef AUX_H
 #define AUX_H
 
-#include <stdio.h>
-
-#define MAX_VARS 20 // Límite de variables por enunciado
-#define MAX_RESTRICCIONES 20 // Límite de restricciones
-
-// --------------------------------- //
-// Structs
+#define MAX_ITEMS 20
+#define MAX_CAPACIDAD 100
 
 typedef struct {
-    int coeficiente;
-    int id_var; // x1 , x2, x3, ...
-} Variable;
+	int num_items;
+	int capacidad;
+	int pesos[MAX_ITEMS];
+	int valores[MAX_ITEMS];
+} Knapsack;
 
-typedef struct {
-    Variable variables[MAX_VARS];
-    int num_vars;
-    char tipo_restriccion[5];  // "<=", ">=", "="
-    int termino_independiente;  // Lo que está a la derecha del operador de restricción
-} Restriccion;
-
-// --------------------------------- //
-// Funciones
-void pedir_datos(void);
-
-int extraer_funcion_z(const char *cadena, Variable variables[], int *num_vars);
-
-int extraer_restriccion(const char *cadena, Restriccion *restriccion);
+void generar_problema_knapsack(Knapsack *problema, int num_items);
+void imprimir_knapsack(const Knapsack *problema);
 
 #endif

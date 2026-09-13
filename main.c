@@ -1,32 +1,46 @@
 #include <stdio.h>
+#include <errno.h>
+#include <limits.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
-#include "aux.h"
+#include "aux_funcs.h"
 
-int main() {
-    pedir_datos();
+static void ejecutar_experimentos(int cantidad) {
+    Knapsack problema;
 
-    // --------------------------------- //
-    // Crear el archivo de .tex
-    FILE *tex = fopen("salida.tex", "w");
-    if (tex == NULL) {
-        perror("Error al crear el archivo .tex");
-        return 1;
+    for (int i = 0; i < cantidad; i++) {
+        generar_problema_knapsack(&problema, 5 + rand() % 6);
     }
+}
 
-    // --------------------------------- //
-    // Líneas
-    fprintf(tex, "\\documentclass{article}\n");
-    fprintf(tex, "\\usepackage[utf8]{inputenc}\n");
-    fprintf(tex, "\\usepackage[spanish]{babel}\n");
-    fprintf(tex, "\\title{Reporte de Salida}\n");
-    fprintf(tex, "\\author{Proyecto C}\n");
-    fprintf(tex, "\\begin{document}\n");
-    fprintf(tex, "\\maketitle\n");
-    fprintf(tex, "\\section{Resultados}\n");
-    fprintf(tex, "Documento generado correctamente desde el programa en C.\n");
-    fprintf(tex, "\\end{document}\n");
-    fclose(tex);
+int main(int argc, char *argv[]) {
+    char *fin_numero;
+    long numero_experimentos;
+
+    srand((unsigned int) time(NULL));
+
+    if (argc != 2) {
+        printf("Error, uso: -X o -E=n\n");
+    } else if (strcmp(argv[1], "-X") == 0) {
+        printf("Modo de ejemplo activado.\n");
+        ejecutar_experimentos(1);
+
+    } else if (strncmp(argv[1], "-E=", 3) == 0) {
+        errno = 0;
+        numero_experimentos = strtol(argv[1] + 3, &fin_numero, 10);
+
+        if (argv[1][3] != '\0' && *fin_numero == '\0' && errno == 0 &&
+            numero_experimentos > 0 && numero_experimentos <= INT_MAX) {
+            ejecutar_experimentos((int) numero_experimentos);
+            
+        } else {
+            printf("Error, n debe ser un entero. Uso: -X o -E=n\n");
+        }
+    } else {
+        printf("Error, uso: -X o -E=n\n");
+    }
 
     return 0;
 }

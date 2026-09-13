@@ -1,8 +1,8 @@
 #ifndef DINAMIC_H
 #define DINAMIC_H
 
-#include "aux.h"
+#include "aux_funcs.h"
 
-void empezar_knapsack(int capacidad, int num_items, int pesos[], int valores[]);
+int empezar_knapsack(const Knapsack *problema);
 
 #endif
