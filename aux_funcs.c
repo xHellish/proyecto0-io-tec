@@ -37,11 +37,15 @@ void generar_problema_knapsack_ejemplo(Knapsack *problema) {
 }
 
 void imprimir_knapsack(const Knapsack *problema) {
-	printf("Z = ");
+	
+	printf("Z (valores) = ");
+
 	for (int i = 0; i < problema->num_items; i++) {
 		printf("%s%dx%d", i == 0 ? "" : " + ", problema->valores[i], i + 1);
 	}
-	printf("\nVariables: x_i in {0,1}\nRestriccion: ");
+
+	printf("\nVariables: x_i ∈ {0,1}\nRestricción (pesos): ");
+
 	for (int i = 0; i < problema->num_items; i++) {
 		printf("%s%dx%d", i == 0 ? "" : " + ", problema->pesos[i], i + 1);
 	}
