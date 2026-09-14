@@ -1,8 +1,8 @@
-#ifndef DINAMIC_H
-#define DINAMIC_H
+#ifndef DYNAMIC_H
+#define DYNAMIC_H
 
 #include "aux_funcs.h"
 
-int empezar_knapsack(const Knapsack *problema);
+int empezar_knapsack_dynamic(const Knapsack *problema);
 
 #endif

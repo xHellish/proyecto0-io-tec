@@ -1,6 +1,6 @@
 #include "dynamic.h"
 
-int empezar_knapsack(const Knapsack *problema) {
+int empezar_knapsack_dynamic(const Knapsack *problema) {
 	int tabla[MAX_CAPACIDAD + 1][MAX_ITEMS + 1] = {{0}};
 
 	for (int capacidad = 0; capacidad <= problema->capacidad; capacidad++) {
