@@ -14,9 +14,12 @@ static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
     for (int i = 0; i < cantidad; i++) {
         if (es_ejemplo) {
             generar_problema_knapsack_ejemplo(&problema);
+
         } else {
             generar_problema_knapsack(&problema, 5 + rand() % 6);
+            
         }
+
         empezar_knapsack_dynamic(&problema);  // Correr algoritmo dinámico
     }
 }

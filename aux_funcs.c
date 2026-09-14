@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static void generar_problema_knapsack_con_limites(Knapsack *problema,
-	int num_items, int capacidad, int max_peso, int max_valor) {
+static void generar_problema_knapsack_con_limites(Knapsack *problema, int num_items, int capacidad, int max_peso, int max_valor) {
+	
 	int peso_total = 0;
 
 	problema->num_items = num_items;
@@ -16,8 +16,10 @@ static void generar_problema_knapsack_con_limites(Knapsack *problema,
 
 	if (capacidad > 0) {
 		problema->capacidad = capacidad;
+
 	} else {
 		problema->capacidad = peso_total / 2;
+
 		if (problema->capacidad == 0) {
 			problema->capacidad = 1;
 		}
@@ -25,6 +27,7 @@ static void generar_problema_knapsack_con_limites(Knapsack *problema,
 
 	printf("Generado problema de mochila con %d items y capacidad %d\n",
 		problema->num_items, problema->capacidad);
+
 	imprimir_knapsack(problema);
 }
 
@@ -37,9 +40,9 @@ void generar_problema_knapsack_ejemplo(Knapsack *problema) {
 }
 
 void imprimir_knapsack(const Knapsack *problema) {
-	
-	printf("Z (valores) = ");
 
+	printf("Z (valores) = ");
+	
 	for (int i = 0; i < problema->num_items; i++) {
 		printf("%s%dx%d", i == 0 ? "" : " + ", problema->valores[i], i + 1);
 	}
@@ -49,5 +52,6 @@ void imprimir_knapsack(const Knapsack *problema) {
 	for (int i = 0; i < problema->num_items; i++) {
 		printf("%s%dx%d", i == 0 ? "" : " + ", problema->pesos[i], i + 1);
 	}
+
 	printf(" <= %d\n", problema->capacidad);
 }
