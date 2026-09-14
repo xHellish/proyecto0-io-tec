@@ -6,12 +6,17 @@
 #include <time.h>
 
 #include "aux_funcs.h"
+#include "dynamic.h"
 
-static void ejecutar_experimentos(int cantidad) {
+static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
     Knapsack problema;
 
     for (int i = 0; i < cantidad; i++) {
-        generar_problema_knapsack(&problema, 5 + rand() % 6);  // Generar el modelo del problema de manera random
+        if (es_ejemplo) {
+            generar_problema_knapsack_ejemplo(&problema);
+        } else {
+            generar_problema_knapsack(&problema, 5 + rand() % 6);
+        }
         empezar_knapsack_dynamic(&problema);  // Correr algoritmo dinámico
     }
 }
@@ -27,7 +32,7 @@ int main(int argc, char *argv[]) {
 
     } else if (strcmp(argv[1], "-X") == 0) {
         printf("Modo de ejemplo activado.\n");
-        ejecutar_experimentos(1);
+        ejecutar_experimentos(1, 1);
 
     } else if (strncmp(argv[1], "-E=", 3) == 0) {
         errno = 0;
@@ -35,11 +40,12 @@ int main(int argc, char *argv[]) {
 
         if (argv[1][3] != '\0' && *fin_numero == '\0' && errno == 0 &&
             numero_experimentos > 0 && numero_experimentos <= INT_MAX) {
-            ejecutar_experimentos((int) numero_experimentos);  // Ejecuta la función con el número de experimentos especificado
+            ejecutar_experimentos((int) numero_experimentos, 0);  // Ejecuta la función con el número de experimentos especificado
             
         } else {
             printf("Error, n debe ser un entero. Uso: -X o -E=n\n");
         }
+        
     } else {
         printf("Error, uso: -X o -E=n\n");
     }
