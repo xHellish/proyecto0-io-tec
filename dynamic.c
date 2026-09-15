@@ -1,8 +1,20 @@
 #include "dynamic.h"
 #include <stdio.h>
+#include <time.h>
 
-int empezar_knapsack_dynamic(const Knapsack *problema) {
+struct respuesta_dynamic empezar_knapsack_dynamic(const Knapsack *problema) {
 	
+	// Inicializar la estructura de respuesta
+	struct respuesta_dynamic respuesta = {
+		.tiempo = 0.0,
+		.cantidad_elementos = problema->num_items,
+		.capacidad = problema->capacidad,
+		.valor_z = 0,
+		.solucion = {0}
+	};
+	
+	clock_t inicio = clock();  // Iniciar el tiempo desde el comienzo del algoritmo
+
 	int tabla[MAX_CAPACIDAD + 1][MAX_ITEMS + 1] = {{0}};
 
 	for (int capacidad_disponible = 0; capacidad_disponible <= problema->capacidad; capacidad_disponible++) {
@@ -39,8 +51,9 @@ int empezar_knapsack_dynamic(const Knapsack *problema) {
 		
 		// Si el valor cambia al quitar el objeto, ese objeto forma parte de la solución óptima
 		if (tabla[capacidad_restante][cantidad_objetos] != tabla[capacidad_restante][cantidad_objetos - 1]) {
+			respuesta.solucion[indice_objeto] = 1;
 			
-			printf("x%d ", indice_objeto + 1);
+			printf("x%d ", indice_objeto + 1);  // debug: imprimir el objeto seleccionado en la solución óptima
 			
 			hay_objetos_seleccionados = 1;
 			capacidad_restante -= problema->pesos[indice_objeto];
@@ -53,5 +66,8 @@ int empezar_knapsack_dynamic(const Knapsack *problema) {
 	
 	printf("\n");
 
-	return tabla[problema->capacidad][problema->num_items];
+	respuesta.valor_z = tabla[problema->capacidad][problema->num_items];
+	respuesta.tiempo = (double) (clock() - inicio) / CLOCKS_PER_SEC;
+
+	return respuesta;
 }
