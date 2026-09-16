@@ -3,7 +3,7 @@
 
 #include "aux_funcs.h"
 
-int empezar_knapsack_greedy_basico(const Knapsack *problema);
-int empezar_knapsack_greedy_proporcional(const Knapsack *problema);
+void empezar_knapsack_greedy_basico(const Knapsack *problema, ResultadoAlgoritmo *resultado);
+void empezar_knapsack_greedy_proporcional(const Knapsack *problema, ResultadoAlgoritmo *resultado);
 
 #endif

@@ -32,24 +32,27 @@ static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
         clock_gettime(CLOCK_MONOTONIC, &fin);
         long long tiempo_dinamico = calcular_tiempo_ns(inicio, fin);
 
-        // --- 2. GREEDY BÁSICO ---
+        ResultadoAlgoritmo res_basico;
+        ResultadoAlgoritmo res_proporcional;
+
+        // --- GREEDY BÁSICO ---
         clock_gettime(CLOCK_MONOTONIC, &inicio);
-        empezar_knapsack_greedy_basico(&problema);
+        empezar_knapsack_greedy_basico(&problema, &res_basico);
         clock_gettime(CLOCK_MONOTONIC, &fin);
-        long long tiempo_basico = calcular_tiempo_ns(inicio, fin);
+        res_basico.tiempo_ns = calcular_tiempo_ns(inicio, fin); // Guardar tiempo en el struct
 
         // --- 3. GREEDY PROPORCIONAL ---
         clock_gettime(CLOCK_MONOTONIC, &inicio);
-        empezar_knapsack_greedy_proporcional(&problema);
+        empezar_knapsack_greedy_proporcional(&problema, &res_proporcional);
         clock_gettime(CLOCK_MONOTONIC, &fin);
-        long long tiempo_proporcional = calcular_tiempo_ns(inicio, fin);
+        res_proporcional.tiempo_ns = calcular_tiempo_ns(inicio, fin); // Guardar tiempo en el struct
 
         // Imprimir los tiempos si estamos en modo ejemplo
         if (es_ejemplo) {
             printf("\n--- TIEMPOS DE EJECUCIÓN ---\n");
             printf("Prog. Dinámica:      %lld ns\n", tiempo_dinamico);
-            printf("Greedy Básico:       %lld ns\n", tiempo_basico);
-            printf("Greedy Proporcional: %lld ns\n\n", tiempo_proporcional);
+            printf("Greedy Básico:       %lld ns\n", res_basico.tiempo_ns);
+            printf("Greedy Proporcional: %lld ns\n\n", res_proporcional.tiempo_ns);
         }
     }
 }
