@@ -7,6 +7,7 @@
 
 #include "aux_funcs.h"
 #include "dynamic.h"
+#include "greedy.h"
 
 static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
     Knapsack problema;
@@ -20,7 +21,9 @@ static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
             
         }
 
-        empezar_knapsack_dynamic(&problema);  // Correr algoritmo dinámico
+        empezar_knapsack_dynamic(&problema);             // Correr algoritmo dinámico
+        empezar_knapsack_greedy_basico(&problema);       // Correr greedy básico
+        empezar_knapsack_greedy_proporcional(&problema); // Correr greedy proporcional
     }
 }
 

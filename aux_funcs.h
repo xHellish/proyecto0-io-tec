@@ -1,8 +1,8 @@
 #ifndef AUX_H
 #define AUX_H
 
-#define MAX_ITEMS 20
-#define MAX_CAPACIDAD 100
+#define MAX_ITEMS 100
+#define MAX_CAPACIDAD 1000
 
 typedef struct {
 	int num_items;
