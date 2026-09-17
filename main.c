@@ -32,18 +32,18 @@ static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
         clock_gettime(CLOCK_MONOTONIC, &fin);
         long long tiempo_dinamico = calcular_tiempo_ns(inicio, fin);
 
-        RespuestaGreedy1 res_basico;
-        RespuestaGreedy2 res_proporcional;
+        RespuestaGreedyBasico res_basico;
+        RespuestaGreedyProporcional res_proporcional;
 
         // --- GREEDY BÁSICO ---
         clock_gettime(CLOCK_MONOTONIC, &inicio);
-        empezar_knapsack_greedy_basico(&problema, &res_basico);
+        res_basico = empezar_knapsack_greedy_basico(&problema);
         clock_gettime(CLOCK_MONOTONIC, &fin);
         res_basico.tiempo_ns = calcular_tiempo_ns(inicio, fin); // Guardar tiempo en el struct
 
         // --- 3. GREEDY PROPORCIONAL ---
         clock_gettime(CLOCK_MONOTONIC, &inicio);
-        empezar_knapsack_greedy_proporcional(&problema, &res_proporcional);
+        res_proporcional = empezar_knapsack_greedy_proporcional(&problema);
         clock_gettime(CLOCK_MONOTONIC, &fin);
         res_proporcional.tiempo_ns = calcular_tiempo_ns(inicio, fin); // Guardar tiempo en el struct
 

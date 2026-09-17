@@ -25,7 +25,7 @@ typedef struct {
     int capacidad_mochila;
     int valor_total;
     int variables[MAX_ITEMS];
-} RespuestaGreedy1;
+} RespuestaGreedyBasico;
 
 typedef struct {
     long long tiempo_ns;
@@ -33,7 +33,7 @@ typedef struct {
     int capacidad_mochila;
     int valor_total;
     int variables[MAX_ITEMS];
-} RespuestaGreedy2;
+} RespuestaGreedyProporcional;
 
 void generar_problema_knapsack(Knapsack *problema, int num_items);
 

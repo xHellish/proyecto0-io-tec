@@ -1,12 +1,15 @@
 #include "greedy.h"
 
-void empezar_knapsack_greedy_basico(const Knapsack *problema, RespuestaGreedy1 *resultado) {
+RespuestaGreedyBasico empezar_knapsack_greedy_basico(const Knapsack *problema) {
     int capacidad_restante = problema->capacidad;
     int seleccionados[MAX_ITEMS] = {0};
-
-    resultado->cantidad_elementos = problema->num_items;
-    resultado->capacidad_mochila = problema->capacidad;
-    resultado->valor_total = 0;
+    RespuestaGreedyBasico resultado = {
+        .tiempo_ns = 0,
+        .cantidad_elementos = problema->num_items,
+        .capacidad_mochila = problema->capacidad,
+        .valor_total = 0,
+        .variables = {0}
+    };
 
     while (1) {
         int mejor_indice = -1;
@@ -26,21 +29,26 @@ void empezar_knapsack_greedy_basico(const Knapsack *problema, RespuestaGreedy1 *
 
         seleccionados[mejor_indice] = 1;
         capacidad_restante -= problema->pesos[mejor_indice];
-        resultado->valor_total += problema->valores[mejor_indice];
+        resultado.valor_total += problema->valores[mejor_indice];
     }
 
     for (int i = 0; i < MAX_ITEMS; i++) {
-        resultado->variables[i] = seleccionados[i];
+        resultado.variables[i] = seleccionados[i];
     }
+
+    return resultado;
 }
 
-void empezar_knapsack_greedy_proporcional(const Knapsack *problema, RespuestaGreedy2 *resultado) {
+RespuestaGreedyProporcional empezar_knapsack_greedy_proporcional(const Knapsack *problema) {
     int capacidad_restante = problema->capacidad;
     int seleccionados[MAX_ITEMS] = {0};
-
-    resultado->cantidad_elementos = problema->num_items;
-    resultado->capacidad_mochila = problema->capacidad;
-    resultado->valor_total = 0;
+    RespuestaGreedyProporcional resultado = {
+        .tiempo_ns = 0,
+        .cantidad_elementos = problema->num_items,
+        .capacidad_mochila = problema->capacidad,
+        .valor_total = 0,
+        .variables = {0}
+    };
 
     while (1) {
         int mejor_indice = -1;
@@ -62,10 +70,12 @@ void empezar_knapsack_greedy_proporcional(const Knapsack *problema, RespuestaGre
 
         seleccionados[mejor_indice] = 1;
         capacidad_restante -= problema->pesos[mejor_indice];
-        resultado->valor_total += problema->valores[mejor_indice];
+        resultado.valor_total += problema->valores[mejor_indice];
     }
 
     for (int i = 0; i < MAX_ITEMS; i++) {
-        resultado->variables[i] = seleccionados[i];
+        resultado.variables[i] = seleccionados[i];
     }
+
+    return resultado;
 }
