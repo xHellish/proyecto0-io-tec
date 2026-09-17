@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <time.h>
 
-struct respuesta_dynamic empezar_knapsack_dynamic(const Knapsack *problema) {
+RespuestaDynamic empezar_knapsack_dynamic(const Knapsack *problema) {
 	
 	// Inicializar la estructura de respuesta
-	struct respuesta_dynamic respuesta = {
+	RespuestaDynamic respuesta = {
 		.tiempo = 0.0,
 		.cantidad_elementos = problema->num_items,
 		.capacidad = problema->capacidad,

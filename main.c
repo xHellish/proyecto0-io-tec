@@ -32,8 +32,8 @@ static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
         clock_gettime(CLOCK_MONOTONIC, &fin);
         long long tiempo_dinamico = calcular_tiempo_ns(inicio, fin);
 
-        ResultadoAlgoritmo res_basico;
-        ResultadoAlgoritmo res_proporcional;
+        RespuestaGreedy1 res_basico;
+        RespuestaGreedy2 res_proporcional;
 
         // --- GREEDY BÁSICO ---
         clock_gettime(CLOCK_MONOTONIC, &inicio);

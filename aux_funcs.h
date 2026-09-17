@@ -12,12 +12,28 @@ typedef struct {
 } Knapsack;
 
 typedef struct {
-    long long tiempo_ns;           // Tiempo de duración en nanosegundos
-    int cantidad_elementos;        // Cantidad de elementos evaluados
-    int capacidad_mochila;         // Capacidad de la mochila evaluada
-    int valor_total;               // El valor final obtenido en la mochila
-    int variables[MAX_ITEMS];      // 1 si el objeto i fue seleccionado
-} ResultadoAlgoritmo;
+    double tiempo;
+    int cantidad_elementos;
+    int capacidad;
+    int valor_z;
+    int solucion[MAX_ITEMS];
+} RespuestaDynamic;
+
+typedef struct {
+    long long tiempo_ns;
+    int cantidad_elementos;
+    int capacidad_mochila;
+    int valor_total;
+    int variables[MAX_ITEMS];
+} RespuestaGreedy1;
+
+typedef struct {
+    long long tiempo_ns;
+    int cantidad_elementos;
+    int capacidad_mochila;
+    int valor_total;
+    int variables[MAX_ITEMS];
+} RespuestaGreedy2;
 
 void generar_problema_knapsack(Knapsack *problema, int num_items);
 
