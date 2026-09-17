@@ -55,3 +55,8 @@ void imprimir_knapsack(const Knapsack *problema) {
 
 	printf(" <= %d\n", problema->capacidad);
 }
+
+// Función auxiliar para calcular la diferencia de tiempo en nanosegundos
+long long calcular_tiempo_ns(struct timespec inicio, struct timespec fin) {
+    return (fin.tv_sec - inicio.tv_sec) * 1000000000LL + (fin.tv_nsec - inicio.tv_nsec);
+}

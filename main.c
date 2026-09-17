@@ -9,11 +9,6 @@
 #include "dynamic.h"
 #include "greedy.h"
 
-// Función auxiliar para calcular la diferencia de tiempo en nanosegundos
-static long long calcular_tiempo_ns(struct timespec inicio, struct timespec fin) {
-    return (fin.tv_sec - inicio.tv_sec) * 1000000000LL + (fin.tv_nsec - inicio.tv_nsec);
-}
-
 static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
     Knapsack problema;
     struct timespec inicio, fin;
@@ -26,22 +21,23 @@ static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
             generar_problema_knapsack(&problema, 5 + rand() % 6);
         }
 
-        // --- 1. PROGRAMACIÓN DINÁMICA ---
-        clock_gettime(CLOCK_MONOTONIC, &inicio);
-        empezar_knapsack_dynamic(&problema);
-        clock_gettime(CLOCK_MONOTONIC, &fin);
-        long long tiempo_dinamico = calcular_tiempo_ns(inicio, fin);
-
         RespuestaGreedyBasico res_basico;
         RespuestaGreedyProporcional res_proporcional;
+        RespuestaDynamic res_dinamico;
 
-        // --- GREEDY BÁSICO ---
+        // PROGRAMACIÓN DINÁMICA
+        clock_gettime(CLOCK_MONOTONIC, &inicio);
+        res_dinamico = empezar_knapsack_dynamic(&problema);
+        clock_gettime(CLOCK_MONOTONIC, &fin);
+        res_dinamico.tiempo_ns = calcular_tiempo_ns(inicio, fin);
+
+        // GREEDY BÁSICO
         clock_gettime(CLOCK_MONOTONIC, &inicio);
         res_basico = empezar_knapsack_greedy_basico(&problema);
         clock_gettime(CLOCK_MONOTONIC, &fin);
         res_basico.tiempo_ns = calcular_tiempo_ns(inicio, fin); // Guardar tiempo en el struct
 
-        // --- 3. GREEDY PROPORCIONAL ---
+        // GREEDY PROPORCIONAL
         clock_gettime(CLOCK_MONOTONIC, &inicio);
         res_proporcional = empezar_knapsack_greedy_proporcional(&problema);
         clock_gettime(CLOCK_MONOTONIC, &fin);
@@ -50,7 +46,7 @@ static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
         // Imprimir los tiempos si estamos en modo ejemplo
         if (es_ejemplo) {
             printf("\n--- TIEMPOS DE EJECUCIÓN ---\n");
-            printf("Prog. Dinámica:      %lld ns\n", tiempo_dinamico);
+            printf("Prog. Dinámica:      %lld ns\n", res_dinamico.tiempo_ns);
             printf("Greedy Básico:       %lld ns\n", res_basico.tiempo_ns);
             printf("Greedy Proporcional: %lld ns\n\n", res_proporcional.tiempo_ns);
         }

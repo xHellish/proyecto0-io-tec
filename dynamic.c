@@ -6,7 +6,7 @@ RespuestaDynamic empezar_knapsack_dynamic(const Knapsack *problema) {
 	
 	// Inicializar la estructura de respuesta
 	RespuestaDynamic respuesta = {
-		.tiempo = 0.0,
+		.tiempo_ns = 0.0,
 		.cantidad_elementos = problema->num_items,
 		.capacidad = problema->capacidad,
 		.valor_z = 0,
@@ -67,7 +67,7 @@ RespuestaDynamic empezar_knapsack_dynamic(const Knapsack *problema) {
 	printf("\n");
 
 	respuesta.valor_z = tabla[problema->capacidad][problema->num_items];
-	respuesta.tiempo = (double) (clock() - inicio) / CLOCKS_PER_SEC;
+	respuesta.tiempo_ns = (double) (clock() - inicio) / CLOCKS_PER_SEC;
 
 	return respuesta;
 }
