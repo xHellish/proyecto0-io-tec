@@ -25,8 +25,7 @@ static void generar_problema_knapsack_con_limites(Knapsack *problema, int num_it
 		}
 	}
 
-	printf("Generado problema de mochila con %d items y capacidad %d\n",
-		problema->num_items, problema->capacidad);
+	printf("Generado problema de mochila con %d items y capacidad %d\n", problema->num_items, problema->capacidad);
 
 	imprimir_knapsack(problema);
 }
@@ -59,4 +58,18 @@ void imprimir_knapsack(const Knapsack *problema) {
 // Función auxiliar para calcular la diferencia de tiempo en nanosegundos
 long long calcular_tiempo_ns(struct timespec inicio, struct timespec fin) {
     return (fin.tv_sec - inicio.tv_sec) * 1000000000LL + (fin.tv_nsec - inicio.tv_nsec);
+}
+
+int soluciones_iguales(const Respuesta *respuesta_a, const Respuesta *respuesta_b) {
+	if (respuesta_a->cantidad_elementos != respuesta_b->cantidad_elementos) {
+		return 0;
+	}
+
+	for (int i = 0; i < respuesta_a->cantidad_elementos; i++) {
+		if (respuesta_a->variables[i] != respuesta_b->variables[i]) {
+			return 0;
+		}
+	}
+
+	return 1;
 }

@@ -3,6 +3,8 @@
 
 #include "aux_funcs.h"
 
-RespuestaDynamic empezar_knapsack_dynamic(const Knapsack *problema);
+Respuesta empezar_knapsack_dynamic(const Knapsack *problema);
+
+void imprimir_tabla_resultados(const Respuesta *respuesta, const Knapsack *problema);
 
 #endif

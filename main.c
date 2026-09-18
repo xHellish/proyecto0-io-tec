@@ -16,14 +16,15 @@ static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
     for (int i = 0; i < cantidad; i++) {
         if (es_ejemplo) {
             generar_problema_knapsack_ejemplo(&problema);
+            // printf("Problema de ejemplo generado.\n");
         } else {
             // Nota: Para el modo experimento (-E) ajustaremos esto luego según la Tabla 1
             generar_problema_knapsack(&problema, 5 + rand() % 6);
         }
 
-        RespuestaGreedyBasico res_basico;
-        RespuestaGreedyProporcional res_proporcional;
-        RespuestaDynamic res_dinamico;
+        Respuesta res_basico;
+        Respuesta res_proporcional;
+        Respuesta res_dinamico;
 
         // PROGRAMACIÓN DINÁMICA
         clock_gettime(CLOCK_MONOTONIC, &inicio);
@@ -43,8 +44,9 @@ static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
         clock_gettime(CLOCK_MONOTONIC, &fin);
         res_proporcional.tiempo_ns = calcular_tiempo_ns(inicio, fin); // Guardar tiempo en el struct
 
-        // Imprimir los tiempos si estamos en modo ejemplo
+        
         if (es_ejemplo) {
+            imprimir_tabla_resultados(&res_dinamico, &problema);
             printf("\n--- TIEMPOS DE EJECUCIÓN ---\n");
             printf("Prog. Dinámica:      %lld ns\n", res_dinamico.tiempo_ns);
             printf("Greedy Básico:       %lld ns\n", res_basico.tiempo_ns);

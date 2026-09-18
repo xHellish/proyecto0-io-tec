@@ -1,21 +1,22 @@
 #include "dynamic.h"
+#include "aux_funcs.h"
 #include <stdio.h>
 #include <time.h>
 
-RespuestaDynamic empezar_knapsack_dynamic(const Knapsack *problema) {
+Respuesta empezar_knapsack_dynamic(const Knapsack *problema) {
 	
 	// Inicializar la estructura de respuesta
-	RespuestaDynamic respuesta = {
-		.tiempo_ns = 0.0,
+	Respuesta respuesta = {
+		.tiempo_ns = 0,
 		.cantidad_elementos = problema->num_items,
 		.capacidad = problema->capacidad,
-		.valor_z = 0,
-		.solucion = {0}
+		.valor_total = 0,
+		.variables = {0}
 	};
 	
 	clock_t inicio = clock();  // Iniciar el tiempo desde el comienzo del algoritmo
 
-	int tabla[MAX_CAPACIDAD + 1][MAX_ITEMS + 1] = {{0}};
+	int (*tabla)[MAX_ITEMS + 1] = respuesta.tabla;
 
 	for (int capacidad_disponible = 0; capacidad_disponible <= problema->capacidad; capacidad_disponible++) {
 		
@@ -51,7 +52,7 @@ RespuestaDynamic empezar_knapsack_dynamic(const Knapsack *problema) {
 		
 		// Si el valor cambia al quitar el objeto, ese objeto forma parte de la solución óptima
 		if (tabla[capacidad_restante][cantidad_objetos] != tabla[capacidad_restante][cantidad_objetos - 1]) {
-			respuesta.solucion[indice_objeto] = 1;
+			respuesta.variables[indice_objeto] = 1;
 			
 			printf("x%d ", indice_objeto + 1);  // debug: imprimir el objeto seleccionado en la solución óptima
 			
@@ -66,8 +67,30 @@ RespuestaDynamic empezar_knapsack_dynamic(const Knapsack *problema) {
 	
 	printf("\n");
 
-	respuesta.valor_z = tabla[problema->capacidad][problema->num_items];
-	respuesta.tiempo_ns = (double) (clock() - inicio) / CLOCKS_PER_SEC;
+	respuesta.valor_total = tabla[problema->capacidad][problema->num_items];
+	respuesta.tiempo_ns = (long long) (clock() - inicio) * 1000000000LL / CLOCKS_PER_SEC;
 
 	return respuesta;
+}
+
+// Función para imprimir la tabla de resultados subóptimos, que muestra cómo se puede obtener desde la struct
+void imprimir_tabla_resultados(const Respuesta *respuesta, const Knapsack *problema) {
+	printf("\nTABLA DE RESULTADOS SUBÓPTIMOS\n");
+	printf("Capacidad/items\n");
+
+	for (int cantidad_objetos = 0; cantidad_objetos <= problema->num_items; cantidad_objetos++) {
+		printf("\t%d", cantidad_objetos);
+	}
+
+	printf("\n");
+
+	for (int capacidad_disponible = 0; capacidad_disponible <= problema->capacidad; capacidad_disponible++) {
+		printf("%d", capacidad_disponible);
+
+		for (int cantidad_objetos = 0; cantidad_objetos <= problema->num_items; cantidad_objetos++) {
+			printf("\t%d", respuesta->tabla[capacidad_disponible][cantidad_objetos]);
+		}
+
+		printf("\n");
+	}
 }
