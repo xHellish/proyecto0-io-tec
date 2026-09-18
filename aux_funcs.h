@@ -17,25 +17,10 @@ typedef struct {
     long long tiempo_ns;
     int cantidad_elementos;
     int capacidad;
-    int valor_z;
-    int solucion[MAX_ITEMS];
-} RespuestaDynamic;
-
-typedef struct {
-    long long tiempo_ns;
-    int cantidad_elementos;
-    int capacidad_mochila;
     int valor_total;
     int variables[MAX_ITEMS];
-} RespuestaGreedyBasico;
-
-typedef struct {
-    long long tiempo_ns;
-    int cantidad_elementos;
-    int capacidad_mochila;
-    int valor_total;
-    int variables[MAX_ITEMS];
-} RespuestaGreedyProporcional;
+    int tabla[MAX_CAPACIDAD + 1][MAX_ITEMS + 1];
+} Respuesta;
 
 void generar_problema_knapsack(Knapsack *problema, int num_items);
 
@@ -44,5 +29,7 @@ void generar_problema_knapsack_ejemplo(Knapsack *problema);
 void imprimir_knapsack(const Knapsack *problema);
 
 long long calcular_tiempo_ns(struct timespec inicio, struct timespec fin);
+
+int soluciones_iguales(const Respuesta *respuesta_a, const Respuesta *respuesta_b);
 
 #endif

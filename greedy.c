@@ -1,12 +1,12 @@
 #include "greedy.h"
 
-RespuestaGreedyBasico empezar_knapsack_greedy_basico(const Knapsack *problema) {
+Respuesta empezar_knapsack_greedy_basico(const Knapsack *problema) {
     int capacidad_restante = problema->capacidad;
     int seleccionados[MAX_ITEMS] = {0};
-    RespuestaGreedyBasico resultado = {
+    Respuesta resultado = {
         .tiempo_ns = 0,
         .cantidad_elementos = problema->num_items,
-        .capacidad_mochila = problema->capacidad,
+        .capacidad = problema->capacidad,
         .valor_total = 0,
         .variables = {0}
     };
@@ -39,13 +39,13 @@ RespuestaGreedyBasico empezar_knapsack_greedy_basico(const Knapsack *problema) {
     return resultado;
 }
 
-RespuestaGreedyProporcional empezar_knapsack_greedy_proporcional(const Knapsack *problema) {
+Respuesta empezar_knapsack_greedy_proporcional(const Knapsack *problema) {
     int capacidad_restante = problema->capacidad;
     int seleccionados[MAX_ITEMS] = {0};
-    RespuestaGreedyProporcional resultado = {
+    Respuesta resultado = {
         .tiempo_ns = 0,
         .cantidad_elementos = problema->num_items,
-        .capacidad_mochila = problema->capacidad,
+        .capacidad = problema->capacidad,
         .valor_total = 0,
         .variables = {0}
     };
