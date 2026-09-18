@@ -177,5 +177,6 @@ int main(int argc, char *argv[]) {
     }
     
     system("make pdf");
+    system("evince salida.pdf");
     return 0;
 }
