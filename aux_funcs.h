@@ -24,6 +24,9 @@ typedef struct {
 
 void generar_problema_knapsack(Knapsack *problema, int num_items);
 
+void generar_problema_knapsack_experimento(Knapsack *problema, int num_items,
+                                           int capacidad);
+
 void generar_problema_knapsack_ejemplo(Knapsack *problema);
 
 void imprimir_knapsack(const Knapsack *problema);

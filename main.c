@@ -49,85 +49,78 @@ void print_matrix(double matrix[5][2][10][10]){
 }
 
 void master_matrix_store(double matrix[5][2][10][10], int type, double value, int capacity, int num_elements){
-    int capacity_position = capacity / 100;
-    int elements_position = num_elements / 10;
+    int capacity_position = capacity / 100 - 1;
+    int elements_position = num_elements / 10 - 1;
 
-    printf("capacidad: %d\nelementos: %d\nCantidad de datos:%f\n\n", capacity_position, elements_position, matrix[type][1][capacity_position][elements_position]);
+    if (type < 0 || type >= 5 || capacity_position < 0 || capacity_position >= 10 ||
+        elements_position < 0 || elements_position >= 10) {
+        return;
+    }
 
     // Updates the average value
     matrix[type][0][capacity_position][elements_position] =
                 (matrix[type][0][capacity_position][elements_position] * matrix[type][1][capacity_position][elements_position]
                 + value) / (matrix[type][1][capacity_position][elements_position] + 1);
     
-    printf("Tipo: %d\nPromedio actual: %f\n\n", type, matrix[type][0][capacity_position][elements_position]);
-    
     // Increase counter of elements
     matrix[type][1][capacity_position][elements_position] ++;
 }
 
-static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
-    Knapsack problema;
+static void medir_problema(const Knapsack *problema, int es_ejemplo) {
     struct timespec inicio, fin;
+    Respuesta res_basico;
+    Respuesta res_proporcional;
+    Respuesta res_dinamico;
 
-    // Estructuras de datos para resultados
-    //double master_matrix[5][2][10][10];
-
-    // [0] average_dynamic
-    // [1] average_greedy
-    // [2] ratio_greedy
-    // [3] average_p_greedy
-    // [4] ratio_p_greedy
-
-    // La segunda matrix guarda un conteo de los elementos guardados en cada celda
-
-    // Limpiar la matriz por si acaso
-    wipe_matrix(master_matrix);
-
-
-    for (int i = 0; i < cantidad; i++) {
-        if (es_ejemplo) {
-            generar_problema_knapsack_ejemplo(&problema);
-            // printf("Problema de ejemplo generado.\n");
-        } else {
-            // Nota: Para el modo experimento (-E) ajustaremos esto luego según la Tabla 1
-            generar_problema_knapsack(&problema, 5 + rand() % 6);
-        }
-
-        Respuesta res_basico;
-        Respuesta res_proporcional;
-        Respuesta res_dinamico;
-
-        // PROGRAMACIÓN DINÁMICA
         clock_gettime(CLOCK_MONOTONIC, &inicio);
-        res_dinamico = empezar_knapsack_dynamic(&problema);
+        res_dinamico = empezar_knapsack_dynamic(problema);
         clock_gettime(CLOCK_MONOTONIC, &fin);
         res_dinamico.tiempo_ns = calcular_tiempo_ns(inicio, fin);
-        printf("res_dinamico: %lld\ncapacidad: %d\nacntidad de items: %d\n\n", res_basico.tiempo_ns, problema.capacidad, problema.num_items);
-        master_matrix_store(master_matrix, average_dynamic, res_dinamico.tiempo_ns/1000, problema.capacidad, problema.num_items);
+        master_matrix_store(master_matrix, average_dynamic, res_dinamico.tiempo_ns / 1000,
+                            problema->capacidad, problema->num_items);
 
-        // GREEDY BÁSICO
         clock_gettime(CLOCK_MONOTONIC, &inicio);
-        res_basico = empezar_knapsack_greedy_basico(&problema);
+        res_basico = empezar_knapsack_greedy_basico(problema);
         clock_gettime(CLOCK_MONOTONIC, &fin);
-        res_basico.tiempo_ns = calcular_tiempo_ns(inicio, fin); // Guardar tiempo en el struct
+        res_basico.tiempo_ns = calcular_tiempo_ns(inicio, fin);
 
-        master_matrix_store(master_matrix, average_greedy, res_basico.tiempo_ns/1000, problema.capacidad, problema.num_items);
+        master_matrix_store(master_matrix, average_greedy, res_basico.tiempo_ns / 1000,
+                            problema->capacidad, problema->num_items);
 
-        // GREEDY PROPORCIONAL
         clock_gettime(CLOCK_MONOTONIC, &inicio);
-        res_proporcional = empezar_knapsack_greedy_proporcional(&problema);
+        res_proporcional = empezar_knapsack_greedy_proporcional(problema);
         clock_gettime(CLOCK_MONOTONIC, &fin);
-        res_proporcional.tiempo_ns = calcular_tiempo_ns(inicio, fin); // Guardar tiempo en el struct
+        res_proporcional.tiempo_ns = calcular_tiempo_ns(inicio, fin);
 
-        master_matrix_store(master_matrix, average_p_greedy, res_proporcional.tiempo_ns/1000, problema.capacidad, problema.num_items);
+        master_matrix_store(master_matrix, average_p_greedy, res_proporcional.tiempo_ns / 1000,
+                            problema->capacidad, problema->num_items);
 
-        // Imprimir los tiempos si estamos en modo ejemplo
         if (es_ejemplo) {
-            imprimir_tabla_resultados(&res_dinamico, &problema);
+            imprimir_tabla_resultados(&res_dinamico, problema);
             printf("\n--- TIEMPOS DE EJECUCIÓN ---\n");
             printf("Prog. Dinámica:      %lld ns\n", res_dinamico.tiempo_ns);
             printf("Greedy Básico:       %lld ns\n", res_basico.tiempo_ns);
             printf("Greedy Proporcional: %lld ns\n\n", res_proporcional.tiempo_ns);
+        }
+}
+
+static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
+    wipe_matrix(master_matrix);
+
+    if (es_ejemplo) {
+        Knapsack problema;
+        generar_problema_knapsack_ejemplo(&problema);
+        medir_problema(&problema, 1);
+        return;
+    }
+
+    for (int capacidad = 100; capacidad <= 1000; capacidad += 100) {
+        for (int num_items = 10; num_items <= 100; num_items += 10) {
+            for (int repeticion = 0; repeticion < 100 * cantidad; repeticion++) {
+                Knapsack problema;
+                generar_problema_knapsack_experimento(&problema, num_items, capacidad);
+                medir_problema(&problema, 0);
+            }
         }
     }
 }
@@ -157,7 +150,6 @@ int main(int argc, char *argv[]) {
             numero_experimentos > 0 && numero_experimentos <= INT_MAX) {
             
             // Para el modo experimento ejecutaremos la recolección de estadísticas
-            printf("Modo experimento con n = %ld (En construcción...)\n", numero_experimentos);
             ejecutar_experimentos((int) numero_experimentos, 0);
             generate_latex_experiment_mode(master_matrix);
             

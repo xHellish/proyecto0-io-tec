@@ -34,6 +34,18 @@ void generar_problema_knapsack(Knapsack *problema, int num_items) {
 	generar_problema_knapsack_con_limites(problema, num_items, 0, 10, 50);
 }
 
+void generar_problema_knapsack_experimento(Knapsack *problema, int num_items,
+                                           int capacidad) {
+	problema->num_items = num_items;
+	problema->capacidad = capacidad;
+
+	int max_peso = capacidad * 40 / 100;
+	for (int i = 0; i < num_items; i++) {
+		problema->valores[i] = 1 + rand() % 100;
+		problema->pesos[i] = 1 + rand() % max_peso;
+	}
+}
+
 void generar_problema_knapsack_ejemplo(Knapsack *problema) {
 	generar_problema_knapsack_con_limites(problema, 6, 15, 7, 20);
 }

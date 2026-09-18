@@ -39,11 +39,7 @@ Respuesta empezar_knapsack_dynamic(const Knapsack *problema) {
 		}
 	}
 
-	printf("Valor optimo: %d\n", tabla[problema->capacidad][problema->num_items]);
-	printf("Objetos seleccionados para la solución óptima: ");
-
 	int capacidad_restante = problema->capacidad;
-	int hay_objetos_seleccionados = 0;
 
 	// Recorrer la tabla desde la solución final hacia atrás
 	for (int cantidad_objetos = problema->num_items; cantidad_objetos > 0; cantidad_objetos--) {
@@ -53,19 +49,9 @@ Respuesta empezar_knapsack_dynamic(const Knapsack *problema) {
 		// Si el valor cambia al quitar el objeto, ese objeto forma parte de la solución óptima
 		if (tabla[capacidad_restante][cantidad_objetos] != tabla[capacidad_restante][cantidad_objetos - 1]) {
 			respuesta.variables[indice_objeto] = 1;
-			
-			printf("x%d ", indice_objeto + 1);  // debug: imprimir el objeto seleccionado en la solución óptima
-			
-			hay_objetos_seleccionados = 1;
 			capacidad_restante -= problema->pesos[indice_objeto];
 		}
 	}
-
-	if (!hay_objetos_seleccionados) {
-		printf("ninguno");
-	}
-	
-	printf("\n");
 
 	respuesta.valor_total = tabla[problema->capacidad][problema->num_items];
 	respuesta.tiempo_ns = (long long) (clock() - inicio) * 1000000000LL / CLOCKS_PER_SEC;
