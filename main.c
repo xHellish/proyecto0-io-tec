@@ -111,7 +111,11 @@ static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
         clock_gettime(CLOCK_MONOTONIC, &fin);
         res_basico.tiempo_ns = calcular_tiempo_ns(inicio, fin); // Guardar tiempo en el struct
 
+        // Agregar el tiempo
         master_matrix_store(master_matrix, average_greedy, res_basico.tiempo_ns/1000, problema.capacidad, problema.num_items);
+
+        // Agregar el acierto (o no lmao)
+        master_matrix_store(master_matrix, ratio_greedy, soluciones_iguales(&res_dinamico, &res_basico), problema.capacidad, problema.num_items);
 
         // GREEDY PROPORCIONAL
         clock_gettime(CLOCK_MONOTONIC, &inicio);
@@ -120,6 +124,8 @@ static void ejecutar_experimentos(int cantidad, int es_ejemplo) {
         res_proporcional.tiempo_ns = calcular_tiempo_ns(inicio, fin); // Guardar tiempo en el struct
 
         master_matrix_store(master_matrix, average_p_greedy, res_proporcional.tiempo_ns/1000, problema.capacidad, problema.num_items);
+        // Agregar el acierto (o no lmao)
+        master_matrix_store(master_matrix, ratio_p_greedy, soluciones_iguales(&res_dinamico, &res_proporcional), problema.capacidad, problema.num_items);
 
         // Imprimir los tiempos si estamos en modo ejemplo
         if (es_ejemplo) {
@@ -148,6 +154,7 @@ int main(int argc, char *argv[]) {
     } else if (strcmp(argv[1], "-X") == 0) {
         printf("Modo de ejemplo activado.\n");
         ejecutar_experimentos(1, 1);
+        generate_latex_example_mode();
 
     } else if (strncmp(argv[1], "-E=", 3) == 0) {
         errno = 0;
@@ -168,6 +175,7 @@ int main(int argc, char *argv[]) {
     } else {
         printf("Error, uso: -X o -E=n\n");
     }
-
+    
+    system("make pdf");
     return 0;
 }

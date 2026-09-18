@@ -134,7 +134,10 @@ void generate_latex_experiment_mode(double data_matrix[5][2][10][10]){
 
     // End of doc section
 
-    fprintf(tex, "\n\\end{document}");
+    fprintf(tex, "\n\\end{document}\n");
+    fflush(tex);
+    fclose(tex);
+
 }
 
 void generate_latex_example_mode(double data_matrix[5][2][10][10]){
@@ -280,4 +283,7 @@ void generate_latex_example_mode(double data_matrix[5][2][10][10]){
     // End of doc section
 
     fprintf(tex, "\n\\end{document}");
+
+    fflush(tex);
+    fclose(tex);
 }
