@@ -1,2 +1,7 @@
 
 .vscode/
+main
+salida.log
+salida.pdf
+salida.synctex.gz
+salida.tex
